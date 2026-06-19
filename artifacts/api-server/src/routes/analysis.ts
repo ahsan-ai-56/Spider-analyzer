@@ -5,7 +5,7 @@ import { spiderScansTable, biteScansTable } from "@workspace/db";
 
 const router = Router();
 
-function getOpenAIClient(): OpenAI {
+function getOpenAIClient() {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
     throw new Error("OPENAI_API_KEY environment variable is not set");
@@ -26,7 +26,7 @@ router.post("/analysis/spider", async (req, res) => {
     return;
   }
 
-  let openai: OpenAI;
+  let openai: Awaited<ReturnType<typeof getOpenAIClient>>;
   try {
     openai = getOpenAIClient();
   } catch {
@@ -144,7 +144,7 @@ router.post("/analysis/bite", async (req, res) => {
     return;
   }
 
-  let openai: OpenAI;
+  let openai: Awaited<ReturnType<typeof getOpenAIClient>>;
   try {
     openai = getOpenAIClient();
   } catch {
