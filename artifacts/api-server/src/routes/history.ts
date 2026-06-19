@@ -30,7 +30,6 @@ router.get("/history", async (req, res) => {
         imageBase64: s.imageBase64,
         createdAt: s.analyzedAt.toISOString(),
         _date: s.analyzedAt,
-        _spiderId: s.id,
       })),
       ...biteScans.map((b) => ({
         id: b.id * 2, // unique composite ID
@@ -41,7 +40,6 @@ router.get("/history", async (req, res) => {
         imageBase64: b.imageBase64,
         createdAt: b.analyzedAt.toISOString(),
         _date: b.analyzedAt,
-        _biteId: b.id,
       })),
     ].sort((a, b) => b._date.getTime() - a._date.getTime());
 
@@ -65,7 +63,7 @@ router.get("/history", async (req, res) => {
     }
 
     res.json(
-      history.map(({ _date, _spiderId, _biteId, ...h }) => h)
+      history.map(({ _date, ...h }) => h)
     );
   } catch (err) {
     req.log.error({ err }, "Failed to get history");
