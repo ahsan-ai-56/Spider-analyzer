@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "SpiderVision AI"
+version = "1.0.0"
+id = "artifacts/spidervision"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21127
+
+[services.development]
+run = "pnpm --filter @workspace/spidervision run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/spidervision", "run", "build" ]
+publicDir = "artifacts/spidervision/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21127"
+BASE_PATH = "/"

@@ -3,13 +3,17 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: SpiderVision AI API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: analysis
+    description: AI image analysis operations
+  - name: history
+    description: Scan history operations
 paths:
   /healthz:
     get:
@@ -24,6 +28,141 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /analysis/spider:
+    post:
+      operationId: analyzeSpider
+      tags: [analysis]
+      summary: Analyze spider image
+      description: Upload a base64 image and identify the spider species using AI
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImageAnalysisInput"
+      responses:
+        "200":
+          description: Spider analysis result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SpiderAnalysisResult"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /analysis/bite:
+    post:
+      operationId: analyzeBite
+      tags: [analysis]
+      summary: Analyze bite image
+      description: Upload a base64 image of a bite and identify possible spider cause using AI
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImageAnalysisInput"
+      responses:
+        "200":
+          description: Bite analysis result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BiteAnalysisResult"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /history:
+    get:
+      operationId: getHistory
+      tags: [history]
+      summary: Get scan history
+      description: Returns all previous scan results
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: filter
+          in: query
+          schema:
+            type: string
+            enum: [all, dangerous, safe, today, this_week]
+      responses:
+        "200":
+          description: List of scan history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ScanHistory"
+
+  /history/{id}:
+    delete:
+      operationId: deleteScanHistory
+      tags: [history]
+      summary: Delete a scan history entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted successfully
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /history/clear:
+    delete:
+      operationId: clearHistory
+      tags: [history]
+      summary: Clear all scan history
+      responses:
+        "204":
+          description: All history cleared
+
+  /history/stats:
+    get:
+      operationId: getHistoryStats
+      tags: [history]
+      summary: Get scan statistics
+      description: Returns aggregate statistics about all scans
+      responses:
+        "200":
+          description: Stats object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScanStats"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +173,152 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    ImageAnalysisInput:
+      type: object
+      required:
+        - imageBase64
+      properties:
+        imageBase64:
+          type: string
+          description: Base64 encoded image data (with or without data URI prefix)
+
+    SpiderAnalysisResult:
+      type: object
+      required:
+        - id
+        - spiderName
+        - scientificName
+        - confidence
+        - isDangerous
+        - habitat
+        - diet
+        - lifespan
+        - facts
+        - safetyInfo
+        - relatedSpecies
+        - analyzedAt
+      properties:
+        id:
+          type: integer
+        spiderName:
+          type: string
+        scientificName:
+          type: string
+        confidence:
+          type: number
+          description: Confidence percentage 0-100
+        isDangerous:
+          type: boolean
+        dangerLevel:
+          type: ["string", "null"]
+          enum: [low, medium, high, null]
+        habitat:
+          type: string
+        diet:
+          type: string
+        lifespan:
+          type: string
+        facts:
+          type: array
+          items:
+            type: string
+        safetyInfo:
+          type: string
+        relatedSpecies:
+          type: array
+          items:
+            type: string
+        imageBase64:
+          type: ["string", "null"]
+        analyzedAt:
+          type: string
+          format: date-time
+
+    BiteAnalysisResult:
+      type: object
+      required:
+        - id
+        - possibleSpider
+        - dangerLevel
+        - symptoms
+        - safetyTips
+        - recommendation
+        - analyzedAt
+      properties:
+        id:
+          type: integer
+        possibleSpider:
+          type: string
+        dangerLevel:
+          type: string
+          enum: [low, medium, high]
+        symptoms:
+          type: array
+          items:
+            type: string
+        safetyTips:
+          type: array
+          items:
+            type: string
+        recommendation:
+          type: string
+        imageBase64:
+          type: ["string", "null"]
+        analyzedAt:
+          type: string
+          format: date-time
+
+    ScanHistory:
+      type: object
+      required:
+        - id
+        - type
+        - name
+        - isDangerous
+        - confidence
+        - createdAt
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [spider, bite]
+        name:
+          type: string
+        isDangerous:
+          type: boolean
+        confidence:
+          type: ["number", "null"]
+        imageBase64:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    ScanStats:
+      type: object
+      required:
+        - totalScans
+        - dangerousFound
+        - safeFound
+        - spiderScans
+        - biteScans
+      properties:
+        totalScans:
+          type: integer
+        dangerousFound:
+          type: integer
+        safeFound:
+          type: integer
+        spiderScans:
+          type: integer
+        biteScans:
+          type: integer
