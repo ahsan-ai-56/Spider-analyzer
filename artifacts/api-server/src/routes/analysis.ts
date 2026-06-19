@@ -1,5 +1,6 @@
 import { Router } from "express";
-import OpenAI from "openai";
+import * as OpenAIModule from "openai";
+const OpenAI = (OpenAIModule as any).default ?? OpenAIModule;
 import { db } from "@workspace/db";
 import { spiderScansTable, biteScansTable } from "@workspace/db";
 
@@ -11,10 +12,6 @@ function getOpenAIClient() {
     throw new Error("OPENAI_API_KEY environment variable is not set");
   }
   return new OpenAI({ apiKey });
-}
-
-function stripBase64Prefix(base64: string): string {
-  return base64.replace(/^data:image\/[a-z]+;base64,/, "");
 }
 
 // POST /api/analysis/spider
