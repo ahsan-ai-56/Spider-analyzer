@@ -1,6 +1,5 @@
 import { Router } from "express";
-import * as OpenAIModule from "openai";
-const OpenAI = (OpenAIModule as any).default ?? OpenAIModule;
+import OpenAI from "openai";
 import { db } from "@workspace/db";
 import { spiderScansTable, biteScansTable } from "@workspace/db";
 
