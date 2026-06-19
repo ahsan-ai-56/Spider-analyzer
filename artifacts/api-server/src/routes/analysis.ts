@@ -14,6 +14,10 @@ function getOpenAIClient() {
   return new OpenAI({ apiKey });
 }
 
+function stripBase64Prefix(base64: string): string {
+  return base64.replace(/^data:image\/[a-z]+;base64,/, "");
+}
+
 // POST /api/analysis/spider
 router.post("/analysis/spider", async (req, res) => {
   const { imageBase64 } = req.body as { imageBase64?: string };
@@ -27,7 +31,7 @@ router.post("/analysis/spider", async (req, res) => {
   try {
     openai = getOpenAIClient();
   } catch {
-    res.status(500).json({ error: "OpenAI API key not configured. Please add OPENAI_API_KEY to your secrets." });
+    res.status(500).json({ error: "OpenAI API key not configured." });
     return;
   }
 
@@ -63,8 +67,7 @@ router.post("/analysis/spider", async (req, res) => {
   "safetyInfo": "Safety advice for encountering this spider",
   "relatedSpecies": ["Related species 1", "Related species 2"]
 }
-
-dangerLevel must be "low", "medium", or "high". confidence is 0-100. If no spider is visible, use spiderName "Unknown" with low confidence.`,
+dangerLevel must be "low", "medium", or "high". confidence is 0-100.`,
             },
           ],
         },
@@ -145,7 +148,7 @@ router.post("/analysis/bite", async (req, res) => {
   try {
     openai = getOpenAIClient();
   } catch {
-    res.status(500).json({ error: "OpenAI API key not configured. Please add OPENAI_API_KEY to your secrets." });
+    res.status(500).json({ error: "OpenAI API key not configured." });
     return;
   }
 
@@ -175,8 +178,7 @@ router.post("/analysis/bite", async (req, res) => {
   "safetyTips": ["Safety tip 1", "Safety tip 2", "Safety tip 3"],
   "recommendation": "Medical advice or recommendation"
 }
-
-dangerLevel must be "low", "medium", or "high". Be conservative — if unsure, lean toward medium. If no bite is visible, say so in recommendation.`,
+dangerLevel must be "low", "medium", or "high".`,
             },
           ],
         },
