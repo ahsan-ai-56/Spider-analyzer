@@ -40,24 +40,22 @@ export default function BiteIdentifier() {
   });
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-white">
       {/* Medical warning banner */}
-      <div className="bg-amber-900/20 border-b border-amber-500/20 px-4 py-2.5">
-        <div className="max-w-4xl mx-auto flex items-center gap-2 text-amber-200/80 text-sm">
-          <AlertTriangle className="w-4 h-4 flex-shrink-0" />
-          <span>This tool is informational only and not a replacement for professional medical advice. Seek immediate medical attention for severe symptoms.</span>
+      <div className="bg-amber-50 border-b border-amber-200 px-4 py-3">
+        <div className="max-w-4xl mx-auto flex items-center gap-2 text-amber-800 text-sm">
+          <AlertTriangle className="w-4 h-4 flex-shrink-0 text-amber-500" />
+          <span>This tool is informational only. Seek immediate medical attention for severe symptoms.</span>
         </div>
       </div>
 
       {/* Header */}
-      <section className="py-10 px-4 border-b border-white/5">
+      <section className="py-10 px-4 border-b border-gray-100 bg-gradient-to-br from-amber-50/40 to-white">
         <div className="max-w-4xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-semibold text-amber-400/60 uppercase tracking-widest bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded">Medical Analysis</span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mt-2 mb-3">Spider Bite Identifier AI</h1>
-            <p className="text-white/50 max-w-xl">
+            <span className="inline-flex px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold uppercase tracking-widest mb-3">Medical Analysis</span>
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-2 mb-3">Spider Bite Identifier AI</h1>
+            <p className="text-gray-500 max-w-xl">
               Upload an image of a bite and AI will analyze possible causes, danger level, and recommended steps.
             </p>
           </motion.div>
@@ -65,23 +63,21 @@ export default function BiteIdentifier() {
       </section>
 
       {/* Upload */}
-      <section className="py-10 px-4">
+      <section className="py-10 px-4 bg-gray-50">
         <div className="max-w-2xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="glass-card rounded-2xl p-6 border border-amber-500/10"
-          >
-            <div className="flex items-center gap-2 mb-5">
-              <div className="w-2 h-2 rounded-full bg-amber-500" />
-              <span className="text-xs text-white/50 uppercase tracking-wider font-semibold">Bite Analysis</span>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card rounded-2xl p-6 border-l-4 border-l-amber-400">
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h2 className="font-bold text-gray-900">Upload Bite Image</h2>
+                <p className="text-gray-400 text-xs mt-0.5">Clear photos of the affected area work best</p>
+              </div>
+              <span className="flex items-center gap-1.5 text-xs text-amber-700 font-medium bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">
+                <span className="w-1.5 h-1.5 bg-amber-500 rounded-full" />
+                Bite Analysis
+              </span>
             </div>
             <ImageUploader
-              onAnalyze={(b64) => {
-                setAnalyzeError(null);
-                analyzeMutation.mutate({ data: { imageBase64: b64 } });
-              }}
+              onAnalyze={(b64) => { setAnalyzeError(null); analyzeMutation.mutate({ data: { imageBase64: b64 } }); }}
               isLoading={analyzeMutation.isPending}
               error={analyzeError}
               analyzeLabel="Analyze Bite"
@@ -90,27 +86,21 @@ export default function BiteIdentifier() {
         </div>
       </section>
 
-      {/* Result preview card (danger levels explained) */}
-      <section className="py-10 px-4 border-t border-white/5">
+      {/* Danger levels */}
+      <section className="py-12 px-4 border-t border-gray-100">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-6">Danger Level Guide</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-6">Danger Level Guide</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
-              { level: "Low", color: "white", bg: "bg-white/5", border: "border-white/10", desc: "Minor irritation. Clean, monitor, treat at home." },
-              { level: "Medium", color: "amber", bg: "bg-amber-500/5", border: "border-amber-500/20", desc: "Moderate symptoms. Monitor closely, see a doctor if worsening." },
-              { level: "High", color: "red", bg: "bg-red-500/5", border: "border-red-500/20", desc: "Serious symptoms possible. Seek immediate medical attention." },
+              { level: "Low", bg: "bg-green-50", border: "border-green-200", badge: "bg-green-100 text-green-700", desc: "Minor irritation. Clean, monitor, treat at home." },
+              { level: "Medium", bg: "bg-amber-50", border: "border-amber-200", badge: "bg-amber-100 text-amber-700", desc: "Moderate symptoms. Monitor closely, see a doctor if worsening." },
+              { level: "High", bg: "bg-red-50", border: "border-red-200", badge: "bg-red-100 text-red-700", desc: "Serious symptoms possible. Seek immediate medical attention." },
             ].map((item) => (
-              <motion.div
-                key={item.level}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className={`rounded-xl p-5 ${item.bg} border ${item.border}`}
-              >
-                <div className={`text-sm font-bold mb-2 ${item.color === "red" ? "text-red-400" : item.color === "amber" ? "text-amber-400" : "text-white/70"}`}>
+              <motion.div key={item.level} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className={`rounded-xl p-5 ${item.bg} border ${item.border}`}>
+                <div className={`inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full ${item.badge} mb-3`}>
                   {item.level} Risk
                 </div>
-                <p className="text-white/50 text-xs leading-relaxed">{item.desc}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -118,26 +108,19 @@ export default function BiteIdentifier() {
       </section>
 
       {/* Symptoms */}
-      <section className="py-10 px-4 border-t border-white/5">
+      <section className="py-12 px-4 border-t border-gray-100 bg-gray-50">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-6">Common Bite Symptoms</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-6">Common Bite Symptoms</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {symptomInfo.map((s, i) => {
               const Icon = s.icon;
               return (
-                <motion.div
-                  key={s.label}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.07 }}
-                  className="glass-card rounded-xl p-5 text-center"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-3">
-                    <Icon className="w-5 h-5 text-white/50" />
+                <motion.div key={s.label} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }} className="glass-card rounded-xl p-5 text-center hover:shadow-md transition-shadow">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center mx-auto mb-3">
+                    <Icon className="w-5 h-5 text-amber-600" />
                   </div>
-                  <h3 className="font-semibold text-white text-sm mb-1">{s.label}</h3>
-                  <p className="text-white/40 text-xs leading-relaxed">{s.desc}</p>
+                  <h3 className="font-semibold text-gray-900 text-sm mb-1">{s.label}</h3>
+                  <p className="text-gray-500 text-xs leading-relaxed">{s.desc}</p>
                 </motion.div>
               );
             })}
@@ -146,36 +129,26 @@ export default function BiteIdentifier() {
       </section>
 
       {/* Safety Steps */}
-      <section className="py-10 px-4 border-t border-white/5 pb-20">
+      <section className="py-12 px-4 border-t border-gray-100 pb-20">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-6">First Aid Steps</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-6">First Aid Steps</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {safetySteps.map((s, i) => (
-              <motion.div
-                key={s.step}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="glass-card rounded-xl p-5 flex gap-4"
-              >
-                <span className="text-3xl font-black text-white/10 leading-none">{s.step}</span>
+              <motion.div key={s.step} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} className="glass-card rounded-xl p-5 flex gap-4 hover:shadow-md transition-shadow">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 text-white text-sm font-bold flex items-center justify-center flex-shrink-0 shadow-sm">
+                  {s.step}
+                </div>
                 <div>
-                  <h3 className="font-semibold text-white text-sm mb-1">{s.title}</h3>
-                  <p className="text-white/50 text-xs leading-relaxed">{s.desc}</p>
+                  <h3 className="font-semibold text-gray-900 text-sm mb-1">{s.title}</h3>
+                  <p className="text-gray-500 text-xs leading-relaxed">{s.desc}</p>
                 </div>
               </motion.div>
             ))}
           </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="mt-6 p-4 rounded-xl bg-amber-900/10 border border-amber-500/15 flex items-start gap-3"
-          >
-            <Info className="w-4 h-4 text-amber-400/70 flex-shrink-0 mt-0.5" />
-            <p className="text-amber-200/50 text-sm leading-relaxed">
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mt-6 p-4 rounded-xl bg-amber-50 border border-amber-200 flex items-start gap-3">
+            <Info className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
+            <p className="text-amber-800 text-sm leading-relaxed">
               AI predictions are estimates and may not always be fully accurate. Always consult a healthcare professional for medical decisions.
             </p>
           </motion.div>

@@ -112,8 +112,12 @@ export default function ImageUploader({
     <div className="space-y-4">
       {/* Drop Zone / Preview */}
       <div
-        className={`relative rounded-xl border-2 border-dashed transition-colors overflow-hidden ${
-          isDragging ? "border-white/60 bg-white/5" : "border-white/20 bg-white/[0.02]"
+        className={`relative rounded-2xl border-2 border-dashed transition-all overflow-hidden cursor-pointer ${
+          isDragging
+            ? "border-green-400 bg-green-50"
+            : preview || cameraActive
+            ? "border-gray-200 bg-white"
+            : "border-gray-200 bg-gray-50 hover:border-green-300 hover:bg-green-50/30"
         }`}
         onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
         onDragLeave={() => setIsDragging(false)}
@@ -129,10 +133,15 @@ export default function ImageUploader({
               exit={{ opacity: 0 }}
               className="relative"
             >
-              <img src={preview} alt="Preview" className="w-full max-h-96 object-contain bg-black/60" />
+              <img
+                src={preview}
+                alt="Preview"
+                className="w-full max-h-96 object-contain bg-white"
+                style={{ display: "block" }}
+              />
               <button
-                onClick={clearImage}
-                className="absolute top-3 right-3 p-1.5 rounded-full bg-black/70 border border-white/20 text-white/80 hover:text-white hover:bg-black transition-colors"
+                onClick={(e) => { e.stopPropagation(); clearImage(); }}
+                className="absolute top-3 right-3 p-1.5 rounded-full bg-white border border-gray-200 text-gray-500 hover:text-red-500 hover:border-red-200 shadow-sm transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -143,18 +152,18 @@ export default function ImageUploader({
                 ref={videoRef}
                 autoPlay
                 playsInline
-                className="w-full max-h-96 object-cover bg-black"
+                className="w-full max-h-96 object-cover bg-gray-100"
               />
               <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-3">
                 <button
                   onClick={capturePhoto}
-                  className="px-5 py-2.5 rounded-full bg-white text-black font-semibold text-sm hover:bg-white/90 transition-colors shadow-lg"
+                  className="px-6 py-2.5 rounded-full btn-green font-semibold text-sm shadow-lg"
                 >
                   Capture Photo
                 </button>
                 <button
                   onClick={stopCamera}
-                  className="px-5 py-2.5 rounded-full bg-white/10 border border-white/20 text-white font-semibold text-sm hover:bg-white/20 transition-colors"
+                  className="px-6 py-2.5 rounded-full bg-white border border-gray-200 text-gray-700 font-semibold text-sm shadow-sm hover:bg-gray-50 transition-colors"
                 >
                   Cancel
                 </button>
@@ -166,14 +175,17 @@ export default function ImageUploader({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex flex-col items-center justify-center py-16 px-6 text-center cursor-pointer"
+              className="flex flex-col items-center justify-center py-16 px-6 text-center"
               onClick={() => fileInputRef.current?.click()}
             >
-              <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4">
-                <Upload className="w-7 h-7 text-white/40" />
+              <div className="w-16 h-16 rounded-2xl bg-green-50 border border-green-100 flex items-center justify-center mb-4">
+                <Upload className="w-7 h-7 text-green-500" />
               </div>
-              <p className="text-white/80 font-medium mb-1">Drop image here or click to upload</p>
-              <p className="text-white/40 text-sm">Supports JPG, PNG, WEBP</p>
+              <p className="text-gray-700 font-semibold mb-1">Drop image here or click to upload</p>
+              <p className="text-gray-400 text-sm">Supports JPG, PNG, WEBP</p>
+              {isDragging && (
+                <p className="text-green-600 font-medium text-sm mt-2">Release to upload</p>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
@@ -188,9 +200,9 @@ export default function ImageUploader({
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="flex items-start gap-2 p-3 rounded-lg bg-amber-900/20 border border-amber-500/30 text-amber-200 text-sm"
+            className="flex items-start gap-2 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-sm"
           >
-            <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+            <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-amber-500" />
             <span>{cameraError}</span>
           </motion.div>
         )}
@@ -203,15 +215,15 @@ export default function ImageUploader({
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="flex items-start gap-2 p-3 rounded-lg bg-red-900/20 border border-red-500/30 text-red-300 text-sm"
+            className="flex items-start gap-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm"
           >
-            <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+            <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-red-500" />
             <span>{error}</span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Buttons */}
+      {/* Action buttons */}
       <div className="flex flex-wrap gap-3">
         <input
           ref={fileInputRef}
@@ -222,23 +234,23 @@ export default function ImageUploader({
         />
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 border border-white/15 text-white/80 hover:bg-white/10 hover:text-white text-sm font-medium transition-colors"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 text-sm font-medium transition-colors shadow-sm"
         >
-          <Upload className="w-4 h-4" />
+          <Upload className="w-4 h-4 text-green-500" />
           Upload Image
         </button>
         <button
           onClick={cameraActive ? stopCamera : startCamera}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 border border-white/15 text-white/80 hover:bg-white/10 hover:text-white text-sm font-medium transition-colors"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 text-sm font-medium transition-colors shadow-sm"
         >
-          <Camera className="w-4 h-4" />
+          <Camera className="w-4 h-4 text-green-500" />
           {cameraActive ? "Stop Camera" : "Take Photo"}
         </button>
         <motion.button
           onClick={handleAnalyze}
           disabled={!preview || isLoading}
           whileTap={{ scale: 0.97 }}
-          className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-white text-black font-semibold text-sm hover:bg-white/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors ml-auto"
+          className="flex items-center gap-2 px-6 py-2.5 rounded-xl btn-green font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed ml-auto shadow-sm"
         >
           {isLoading ? (
             <>

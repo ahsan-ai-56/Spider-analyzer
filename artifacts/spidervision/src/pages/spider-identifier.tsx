@@ -43,14 +43,14 @@ export default function SpiderIdentifier() {
   });
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <section className="py-12 px-4 border-b border-white/5">
+      <section className="py-12 px-4 border-b border-gray-100 bg-gradient-to-br from-green-50 to-white">
         <div className="max-w-4xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-            <span className="text-xs font-semibold text-white/30 uppercase tracking-widest">AI Tool</span>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mt-2 mb-3">Spider Identifier AI</h1>
-            <p className="text-white/50 max-w-xl">
+            <span className="inline-flex px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold uppercase tracking-widest mb-3">AI Tool</span>
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-2 mb-3">Spider Identifier AI</h1>
+            <p className="text-gray-500 max-w-xl">
               Upload a spider image or take a photo to identify spider species instantly using AI vision analysis.
             </p>
           </motion.div>
@@ -58,19 +58,21 @@ export default function SpiderIdentifier() {
       </section>
 
       {/* Upload section */}
-      <section className="py-10 px-4">
+      <section className="py-10 px-4 bg-gray-50">
         <div className="max-w-2xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="glass-card rounded-2xl p-6"
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h2 className="font-bold text-gray-900">Upload Spider Image</h2>
+                <p className="text-gray-400 text-xs mt-0.5">Clear, well-lit photos give the best results</p>
+              </div>
+              <span className="flex items-center gap-1.5 text-xs text-green-600 font-medium bg-green-50 px-2.5 py-1 rounded-full border border-green-100">
+                <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                AI Ready
+              </span>
+            </div>
             <ImageUploader
-              onAnalyze={(b64) => {
-                setAnalyzeError(null);
-                analyzeMutation.mutate({ data: { imageBase64: b64 } });
-              }}
+              onAnalyze={(b64) => { setAnalyzeError(null); analyzeMutation.mutate({ data: { imageBase64: b64 } }); }}
               isLoading={analyzeMutation.isPending}
               error={analyzeError}
               analyzeLabel="Identify Spider"
@@ -80,37 +82,28 @@ export default function SpiderIdentifier() {
       </section>
 
       {/* Spider info cards */}
-      <section className="py-10 px-4 border-t border-white/5">
+      <section className="py-12 px-4 border-t border-gray-100">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-6">Common Spider Species</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-6">Common Spider Species</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {spiderCards.map((sp, i) => (
-              <motion.div
-                key={sp.name}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.07 }}
-                className="glass-card rounded-xl p-5"
-              >
+              <motion.div key={sp.name} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }} className="glass-card rounded-xl p-5 hover:shadow-md transition-shadow">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h3 className="font-semibold text-white text-sm">{sp.name}</h3>
-                    <p className="text-white/30 text-xs italic">{sp.sci}</p>
+                    <h3 className="font-semibold text-gray-900 text-sm">{sp.name}</h3>
+                    <p className="text-gray-400 text-xs italic">{sp.sci}</p>
                   </div>
                   {sp.dangerous ? (
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 border border-red-500/20 flex items-center gap-1">
-                      <AlertTriangle className="w-3 h-3" />
-                      Venomous
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-100 flex items-center gap-1 flex-shrink-0">
+                      <AlertTriangle className="w-3 h-3" />Venomous
                     </span>
                   ) : (
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-white/5 text-white/40 border border-white/10 flex items-center gap-1">
-                      <Shield className="w-3 h-3" />
-                      Harmless
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-100 flex items-center gap-1 flex-shrink-0">
+                      <Shield className="w-3 h-3" />Harmless
                     </span>
                   )}
                 </div>
-                <p className="text-white/50 text-xs leading-relaxed">{sp.desc}</p>
+                <p className="text-gray-500 text-xs leading-relaxed">{sp.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -118,24 +111,17 @@ export default function SpiderIdentifier() {
       </section>
 
       {/* Spider Facts */}
-      <section className="py-10 px-4 border-t border-white/5">
+      <section className="py-12 px-4 border-t border-gray-100 bg-gray-50">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-2 mb-6">
-            <Info className="w-5 h-5 text-white/40" />
-            <h2 className="text-xl font-bold text-white">Spider Facts</h2>
+            <Info className="w-5 h-5 text-green-500" />
+            <h2 className="text-xl font-bold text-gray-900">Spider Facts</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {facts.map((fact, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
-                className="flex items-start gap-3 p-4 rounded-xl bg-white/[0.02] border border-white/5"
-              >
-                <span className="text-xs font-bold text-white/20 mt-0.5 w-5 flex-shrink-0">{String(i + 1).padStart(2, "0")}</span>
-                <span className="text-white/60 text-sm leading-relaxed">{fact}</span>
+              <motion.div key={i} initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-100 shadow-sm">
+                <span className="text-xs font-bold text-green-500 mt-0.5 w-5 flex-shrink-0">{String(i + 1).padStart(2, "0")}</span>
+                <span className="text-gray-600 text-sm leading-relaxed">{fact}</span>
               </motion.div>
             ))}
           </div>
@@ -143,26 +129,28 @@ export default function SpiderIdentifier() {
       </section>
 
       {/* Safety */}
-      <section className="py-10 px-4 border-t border-white/5 pb-20">
+      <section className="py-12 px-4 border-t border-gray-100 pb-20">
         <div className="max-w-4xl mx-auto">
           <div className="glass-card rounded-2xl p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Shield className="w-5 h-5 text-white/60" />
-              <h2 className="text-lg font-bold text-white">Spider Safety Guidelines</h2>
+            <div className="flex items-center gap-2 mb-5">
+              <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center border border-green-100">
+                <Shield className="w-4 h-4 text-green-600" />
+              </div>
+              <h2 className="text-lg font-bold text-gray-900">Spider Safety Guidelines</h2>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-white/60">
-              <ul className="space-y-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-600">
+              <ul className="space-y-2.5">
                 {["Never handle a spider with bare hands", "Shake out shoes and clothing left outdoors", "Check under rocks and logs before reaching", "Keep a safe distance when photographing"].map((tip) => (
                   <li key={tip} className="flex items-start gap-2">
-                    <span className="text-white/30 mt-1">—</span>
+                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0" />
                     <span>{tip}</span>
                   </li>
                 ))}
               </ul>
-              <ul className="space-y-2">
+              <ul className="space-y-2.5">
                 {["If bitten, remain calm and seek medical help", "Try to capture or photograph the spider for ID", "Apply ice to reduce swelling if bitten", "Do not try to suck out venom — this is a myth"].map((tip) => (
                   <li key={tip} className="flex items-start gap-2">
-                    <span className="text-white/30 mt-1">—</span>
+                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0" />
                     <span>{tip}</span>
                   </li>
                 ))}
