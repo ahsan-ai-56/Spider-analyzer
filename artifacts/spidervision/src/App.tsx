@@ -32,11 +32,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <div className="dark">
-            <Layout>
-              <Router />
-            </Layout>
-          </div>
+          <Layout>
+            <Router />
+          </Layout>
         </WouterRouter>
         <Toaster />
       </TooltipProvider>
