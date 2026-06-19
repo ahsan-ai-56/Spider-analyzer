@@ -17,47 +17,49 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-white text-gray-900 overflow-x-hidden">
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
+      {/* Green top accent bar */}
+      <div className="fixed top-0 left-0 right-0 h-1 z-50 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500" />
+
+      <nav className="fixed top-1 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-15" style={{ height: "3.75rem" }}>
             <div className="flex items-center gap-3">
               <Link href="/" className="flex items-center gap-2.5 group">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm">
-                  <Bug className="w-4.5 h-4.5 text-white" />
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center group-hover:scale-105 transition-transform shadow-md shadow-green-200">
+                  <Bug className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-xl font-bold tracking-tight text-gray-900">
-                  SpiderVision <span className="green-gradient-text">AI</span>
-                </span>
+                <div className="flex items-center gap-1">
+                  <span className="text-lg font-bold tracking-tight text-gray-900">SpiderVision</span>
+                  <span className="text-lg font-bold tracking-tight green-gradient-text">AI</span>
+                </div>
               </Link>
             </div>
 
-            <div className="hidden md:block">
-              <div className="flex items-baseline space-x-1">
-                {links.map((link) => {
-                  const Icon = link.icon;
-                  const isActive = location === link.href;
-                  return (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                        isActive
-                          ? "bg-green-50 text-green-700 border border-green-100"
-                          : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-                      }`}
-                    >
-                      <Icon className="w-4 h-4" />
-                      {link.label}
-                    </Link>
-                  );
-                })}
-              </div>
+            <div className="hidden md:flex items-center space-x-1">
+              {links.map((link) => {
+                const Icon = link.icon;
+                const isActive = location === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                      isActive
+                        ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-sm shadow-green-200"
+                        : "text-gray-500 hover:bg-green-50 hover:text-green-700"
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    {link.label}
+                  </Link>
+                );
+              })}
             </div>
 
             <div className="md:hidden">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-lg text-gray-500 hover:text-green-600 hover:bg-green-50 transition-colors"
               >
                 {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
@@ -72,7 +74,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="fixed inset-0 z-40 bg-white pt-16 md:hidden shadow-lg"
+            className="fixed inset-0 z-30 bg-white pt-16 md:hidden"
           >
             <div className="px-4 pt-4 pb-3 space-y-1">
               {links.map((link) => {
@@ -85,8 +87,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-medium transition-colors ${
                       isActive
-                        ? "bg-green-50 text-green-700 border border-green-100"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                        ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white"
+                        : "text-gray-600 hover:bg-green-50 hover:text-green-700"
                     }`}
                   >
                     <Icon className="w-5 h-5" />
