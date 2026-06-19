@@ -1,9 +1,11 @@
 import { Router } from "express";
-import OpenAI from "openai";
 import { db } from "@workspace/db";
 import { spiderScansTable, biteScansTable } from "@workspace/db";
 
 const router = Router();
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const OpenAI = require("openai").default;
 
 function getOpenAIClient() {
   const apiKey = process.env.OPENAI_API_KEY;
@@ -26,11 +28,11 @@ router.post("/analysis/spider", async (req, res) => {
     return;
   }
 
-  let openai: Awaited<ReturnType<typeof getOpenAIClient>>;
+  let openai: any;
   try {
     openai = getOpenAIClient();
   } catch {
-    res.status(500).json({ error: "OpenAI API key not configured." });
+    res.status(500).json({ error: "OpenAI API key not configured. Please add OPENAI_API_KEY to your secrets." });
     return;
   }
 
@@ -66,7 +68,7 @@ router.post("/analysis/spider", async (req, res) => {
   "safetyInfo": "Safety advice for encountering this spider",
   "relatedSpecies": ["Related species 1", "Related species 2"]
 }
-dangerLevel must be "low", "medium", or "high". confidence is 0-100.`,
+dangerLevel must be "low", "medium", or "high". confidence is 0-100. If no spider is visible, use spiderName "Unknown" with low confidence.`,
             },
           ],
         },
@@ -143,11 +145,11 @@ router.post("/analysis/bite", async (req, res) => {
     return;
   }
 
-  let openai: Awaited<ReturnType<typeof getOpenAIClient>>;
+  let openai: any;
   try {
     openai = getOpenAIClient();
   } catch {
-    res.status(500).json({ error: "OpenAI API key not configured." });
+    res.status(500).json({ error: "OpenAI API key not configured. Please add OPENAI_API_KEY to your secrets." });
     return;
   }
 
@@ -177,7 +179,7 @@ router.post("/analysis/bite", async (req, res) => {
   "safetyTips": ["Safety tip 1", "Safety tip 2", "Safety tip 3"],
   "recommendation": "Medical advice or recommendation"
 }
-dangerLevel must be "low", "medium", or "high".`,
+dangerLevel must be "low", "medium", or "high". Be conservative — if unsure, lean toward medium. If no bite is visible, say so in recommendation.`,
             },
           ],
         },
