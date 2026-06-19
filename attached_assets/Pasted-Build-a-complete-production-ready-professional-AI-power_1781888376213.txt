@@ -1,0 +1,356 @@
+Build a complete production-ready professional AI-powered web application.
+
+Project Name:
+SpiderVision AI
+
+Purpose:
+Create a modern AI-powered platform where users can identify spiders, analyze possible spider bites, and explore species information using image analysis.
+
+Tech Stack:
+
+- Next.js (App Router only)
+- Tailwind CSS
+- Framer Motion
+- API Routes
+- Responsive Design
+- Dark Mode
+- Production-ready architecture
+- GitHub ready
+- Vercel deployment ready
+
+Important:
+
+- Must work on Vercel without errors
+- No fake functionality
+- No placeholder APIs
+- No broken imports
+- Fix TypeScript and ESLint issues automatically
+- Ensure npm run build passes successfully
+- Ensure npm run lint passes successfully
+- Use environment variables correctly
+- Create .env.example
+- Add loading states
+- Add error states
+- Handle camera permission errors
+- Handle image upload errors
+
+Theme:
+
+Remove blue completely.
+
+Use:
+
+- Black
+- Dark Gray
+- White
+- Soft gray accents
+
+Style:
+
+- Premium dark SaaS design
+- Glassmorphism
+- Smooth animations
+- Modern typography
+- Professional spacing
+- Gradient effects
+- Beautiful buttons
+- Responsive mobile design
+
+====================================================
+NAVBAR
+====================================================
+
+Create navbar:
+
+- Home
+- Spider Identifier
+- Bite Identifier
+- Results
+- History
+- About
+
+====================================================
+PAGE 1 — HOME
+====================================================
+
+Professional landing page.
+
+Hero section:
+
+Headline:
+
+"Identify Any Spider Instantly with AI"
+
+Subtitle:
+
+"Upload a spider image or take a photo and identify spider species within seconds using AI."
+
+Buttons:
+
+- Upload Image
+- Take Photo
+- Try Demo
+
+IMPORTANT:
+
+Directly below navbar place large image analysis section:
+
+- Upload image
+- Drag and drop area
+- Take photo
+- Camera preview
+- Analyze button
+
+Hero visuals:
+
+Professional spider images:
+
+- Tarantula
+- Jumping Spider
+- Black Widow
+- Wolf Spider
+- House Spider
+
+Add floating animations.
+
+Statistics section:
+
+- 10K+ Images analyzed
+- 95% Detection accuracy
+- 100+ Species identified
+- 24/7 AI support
+
+How It Works:
+
+Step 1:
+Upload image or take photo
+
+Step 2:
+AI scans image
+
+Step 3:
+Get instant analysis
+
+Features cards:
+
+- AI Detection
+- Camera Capture
+- Real-Time Analysis
+- Fast Results
+- Dangerous Species Alert
+- Mobile Friendly
+
+Popular Spider Cards:
+
+Black Widow
+
+Jumping Spider
+
+Wolf Spider
+
+Tarantula
+
+House Spider
+
+FAQ section:
+
+- How accurate is AI?
+- Can I use camera?
+- Is it free?
+- Can AI make mistakes?
+
+Footer:
+
+- Privacy
+- Contact
+- Terms
+- GitHub
+
+====================================================
+PAGE 2 — SPIDER IDENTIFIER
+====================================================
+
+Page title:
+
+Spider Identifier AI
+
+Subtitle:
+
+"Upload a spider image or take a photo to identify spider species instantly."
+
+TOP SECTION:
+
+Place analysis area at top:
+
+- Upload Image
+- Drag and Drop
+- Take Photo
+- Camera Preview
+- Analyze Button
+
+Spider Information Section:
+
+Cards:
+
+Black Widow
+"Venomous spider known for red markings"
+
+Jumping Spider
+"Small spider with excellent vision"
+
+Wolf Spider
+"Fast hunting spider"
+
+Tarantula
+"Large hairy spider"
+
+House Spider
+"Common indoor spider"
+
+Spider Facts Section
+
+Spider Safety Section
+
+Make page visually spider-focused.
+
+====================================================
+PAGE 3 — BITE IDENTIFIER
+====================================================
+
+Page title:
+
+Spider Bite Identifier AI
+
+Subtitle:
+
+"Upload a bite image and analyze possible causes using AI."
+
+TOP SECTION:
+
+- Upload Image
+- Take Photo
+- Camera Preview
+- Analyze Button
+
+Results:
+
+Possible spider type
+
+Danger level:
+
+- Low
+- Medium
+- High
+
+Possible symptoms:
+
+- Redness
+- Swelling
+- Pain
+- Itching
+
+Safety Tips:
+
+- Clean affected area
+- Monitor symptoms
+- Seek help if symptoms worsen
+
+Warning:
+
+"This tool is informational only and not a replacement for professional medical advice."
+
+Use a medical-style layout different from other pages.
+
+====================================================
+PAGE 4 — RESULTS
+====================================================
+
+Dashboard style page.
+
+Display:
+
+- Uploaded image
+- Spider image
+- Spider name
+- Confidence percentage
+- Dangerous or harmless badge
+- Scientific name
+- Habitat
+- Diet
+- Life span
+- Interesting facts
+- Safety information
+
+Buttons:
+
+- Share Result
+- Download Result
+
+Related species section.
+
+====================================================
+PAGE 5 — HISTORY
+====================================================
+
+Display:
+
+- Previous scans
+- Image
+- Name
+- Date
+- Status
+
+Add:
+
+Search bar
+
+Filters:
+
+- Dangerous
+- Safe
+- Today
+- This Week
+
+Statistics:
+
+- Total scans
+- Dangerous species found
+- Safe species found
+
+Buttons:
+
+- Delete
+- Clear all
+
+====================================================
+PAGE 6 — ABOUT
+====================================================
+
+Sections:
+
+What is SpiderVision AI?
+
+Our Mission
+
+How AI Works:
+
+1 Upload image
+2 Scan patterns
+3 Compare features
+4 Predict species
+5 Generate results
+
+Why this tool matters:
+
+- Students
+- Researchers
+- Gardeners
+- Nature lovers
+
+Disclaimer:
+
+"AI predictions are estimates and may not always be fully accurate."
+
+====================================================
+
+Generate complete production-ready code with clean folder structure and comments.
