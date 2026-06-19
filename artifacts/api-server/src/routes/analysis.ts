@@ -5,12 +5,36 @@ import { spiderScansTable, biteScansTable } from "@workspace/db";
 
 const router = Router();
 
-function getOpenAIClient(): OpenAI {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) {
-    throw new Error("OPENAI_API_KEY environment variable is not set");
+const GROQ_BASE_URL = "https://api.groq.com/openai/v1";
+const GROQ_VISION_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
+const OPENAI_VISION_MODEL = "gpt-4o";
+
+function getAIClient(): { client: OpenAI; model: string } {
+  const groqKey = process.env.GROQ_API_KEY;
+  const openaiKey = process.env.OPENAI_API_KEY;
+
+  if (groqKey) {
+    return {
+      client: new OpenAI({ apiKey: groqKey, baseURL: GROQ_BASE_URL }),
+      model: GROQ_VISION_MODEL,
+    };
   }
-  return new OpenAI({ apiKey });
+
+  if (openaiKey && openaiKey.startsWith("gsk_")) {
+    return {
+      client: new OpenAI({ apiKey: openaiKey, baseURL: GROQ_BASE_URL }),
+      model: GROQ_VISION_MODEL,
+    };
+  }
+
+  if (openaiKey) {
+    return {
+      client: new OpenAI({ apiKey: openaiKey }),
+      model: OPENAI_VISION_MODEL,
+    };
+  }
+
+  throw new Error("No API key configured. Add GROQ_API_KEY or OPENAI_API_KEY to your secrets.");
 }
 
 function stripBase64Prefix(base64: string): string {
@@ -26,11 +50,12 @@ router.post("/analysis/spider", async (req, res) => {
     return;
   }
 
-  let openai: OpenAI;
+  let client: OpenAI;
+  let model: string;
   try {
-    openai = getOpenAIClient();
+    ({ client, model } = getAIClient());
   } catch {
-    res.status(500).json({ error: "OpenAI API key not configured. Please add OPENAI_API_KEY to your secrets." });
+    res.status(500).json({ error: "No API key configured. Add GROQ_API_KEY or OPENAI_API_KEY to your secrets." });
     return;
   }
 
@@ -39,8 +64,8 @@ router.post("/analysis/spider", async (req, res) => {
     const hasPrefix = imageBase64.startsWith("data:");
     const imageUrl = hasPrefix ? imageBase64 : `data:image/jpeg;base64,${cleanBase64}`;
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
+    const response = await client.chat.completions.create({
+      model,
       max_tokens: 1500,
       messages: [
         {
@@ -144,11 +169,12 @@ router.post("/analysis/bite", async (req, res) => {
     return;
   }
 
-  let openai: OpenAI;
+  let client: OpenAI;
+  let model: string;
   try {
-    openai = getOpenAIClient();
+    ({ client, model } = getAIClient());
   } catch {
-    res.status(500).json({ error: "OpenAI API key not configured. Please add OPENAI_API_KEY to your secrets." });
+    res.status(500).json({ error: "No API key configured. Add GROQ_API_KEY or OPENAI_API_KEY to your secrets." });
     return;
   }
 
@@ -157,8 +183,8 @@ router.post("/analysis/bite", async (req, res) => {
     const hasPrefix = imageBase64.startsWith("data:");
     const imageUrl = hasPrefix ? imageBase64 : `data:image/jpeg;base64,${cleanBase64}`;
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
+    const response = await client.chat.completions.create({
+      model,
       max_tokens: 1200,
       messages: [
         {
