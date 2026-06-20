@@ -3,15 +3,10 @@
   "installCommand": "pnpm install --no-frozen-lockfile",
   "buildCommand": "pnpm run build",
   "outputDirectory": "dist",
-  "functions": {
-    "src/index.ts": {
-      "runtime": "@vercel/node@5.0.0"
-    }
-  },
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/index.ts"
+      "dest": "/api/index.js"
     }
   ]
 }
