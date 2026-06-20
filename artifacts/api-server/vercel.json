@@ -3,7 +3,7 @@
   "installCommand": "pnpm install --no-frozen-lockfile",
   "functions": {
     "src/index.ts": {
-      "runtime": "@vercel/node"
+      "runtime": "@vercel/node@5.x"
     }
   },
   "routes": [
